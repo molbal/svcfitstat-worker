@@ -3,9 +3,9 @@
 </p>
 
 # Introduction
-This repository focuses on how the [CLI modified Pyfa](molbal/Pyfa) runs in Docker and how it is exposed
+This repository focuses on how the [CLI modified Pyfa](/molbal/Pyfa) runs in Docker and how it is exposed
 
-Please see the [svcfitstat](molbal/svcfitstat) repository for the full solution, with an architecture diagram. 
+Please see the [svcfitstat](/molbal/svcfitstat) repository for the full solution, with an architecture diagram. 
 
 # Usage
 The image is published in Docker Hub, so usage is straightforward:
