@@ -32,8 +32,7 @@ RUN yum-config-manager --enable remi-php74
 RUN yum install -y php php-opcache
 
 # Copy the wrapper files
-COPY index.php /var/www/html
-COPY phpinfo.php /var/www/html
+COPY *.php /var/www/html/
 
 # Clean up
 RUN yum clean all

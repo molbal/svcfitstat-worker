@@ -32,9 +32,15 @@
         }
 
         $stats = "{".(explode("{", $ret, 2)[1]);
+
+        $success = true;
+        if (stripos($ret, "error") !== false) {
+            $success = false;
+        }
+
         // Return the fit
         echo json_encode([
-            "success" => success,
+            "success" => $success,
             "stats" => json_decode($stats, 1),
             "debug" => [
                 "rawoutput" => $ret,
