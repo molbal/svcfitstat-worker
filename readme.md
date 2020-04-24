@@ -26,8 +26,113 @@ At all times returned content will have the `Content-type: application/json` hea
 |fit|GET, POST|The fit, in EFT format. You should make sure it is a valid format, because the wrapper does not check it, just feeds it to Pyfa. If supplied via GET parameter, it passes through PHP's [urldecode](https://www.php.net/manual/en/function.urldecode.php) function, so encode it properly. If via POST, it is not urldecoded.|
 |restart|GET|If set, it tries to immediately restart the container|-|
 
-### Example output
-...
+### Example request
+
+***Request***
+
+Container start command:
+
+`docker run -p 82:80 -e SFS_SECRET=a molbal/svcfitstat:0.9.2`
+
+
+Then GET request:
+
+`http://127.0.0.1:82/index.php?fit=[Nergal%2C+Nergsdfasdfl+fit]%0A%0ASmall+Armor+Repairer+II%0AAssault+Damage+Control+II%0AAdaptive+Nano+Plating+II%0AAdaptive+Nano+Plating+II%0A%0ASmall+Hull+Repairer+II%0ASmall+Shield+Booster+I%0ASmall+Compact+Pb-Acid+Cap+Battery%0A%0ALight+Entropic+Disintegrator+I%2C+Tetryon+Exotic+Plasma+S%0A[Empty+High+slot]%0A%0ASmall+Anti-Kinetic+Pump+I%0ASmall+Anti-Kinetic+Pump+I%0A%0AHobgoblin+II+x5&secret=a`
+
+***Output***
+```json
+{
+  "success": true,
+  "stats": {
+    "offense": {
+      "totalDps": 398.48,
+      "weaponDps": 299.48,
+      "droneDps": 99,
+      "totalVolley": 584.67
+    },
+    "defense": {
+      "ehp": {
+        "total": 9507.26030244436,
+        "shield": 540.5405405405405,
+        "armor": 6790.102846480932,
+        "hull": 2176.6169154228855
+      },
+      "resists": {
+        "shield": {
+          "em": 0.075,
+          "therm": 0.5375,
+          "kin": 0.445,
+          "exp": 0.8612
+        },
+        "armor": {
+          "em": 0.736,
+          "therm": 0.868,
+          "kin": 0.7561,
+          "exp": 0.8152
+        },
+        "hull": {
+          "em": 0.598,
+          "therm": 0.598,
+          "kin": 0.598,
+          "exp": 0.598
+        }
+      },
+      "reps": {
+        "burst": {
+          "shieldRegen": 2.88,
+          "shieldBoost": 24.98,
+          "armor": 99.16,
+          "hull": 4.15,
+          "total": 131.17
+        },
+        "sustained": {
+          "shieldRegen": 2.88,
+          "shieldBoost": 7.37,
+          "armor": 99.16,
+          "hull": 0,
+          "total": 109.41
+        }
+      }
+    },
+    "misc": {
+      "ship": {
+        "id": 52250,
+        "name": "Nergal",
+        "cpuMax": 187.5,
+        "powerMax": 68.75,
+        "cpuUsed": 144.75,
+        "pgUsed": 54,
+        "calibrationUsed": 100,
+        "warpSpeed": 5.5
+      },
+      "drones": {
+        "activeDrones": 5,
+        "droneBayTotal": 25,
+        "droneBandwidthUsed": 25,
+        "droneBayUsed": 25
+      },
+      "maxSpeed": 321.46,
+      "signature": 36,
+      "capacitor": {
+        "capacity": 821.25,
+        "stable": false,
+        "stableAt": null,
+        "lastsSeconds": 72
+      },
+      "targeting": {
+        "range": 56250,
+        "resolution": 800,
+        "strength": 16.8
+      }
+    }
+  },
+  "debug": {
+    "rawoutput": "\n(pyfa.py:27): Gtk-WARNING **: 08:56:55.636: Could not load a pixbuf from /org/gtk/libgtk/theme/Adwaita/assets/bullet-symbolic.svg.\nThis may indicate that pixbuf loaders or the mime database could not be found.\n{\"offense\": {\"totalDps\": 398.48, \"weaponDps\": 299.48, \"droneDps\": 99.0, \"totalVolley\": 584.67}, \"defense\": {\"ehp\": {\"total\": 9507.26030244436, \"shield\": 540.5405405405405, \"armor\": 6790.102846480932, \"hull\": 2176.6169154228855}, \"resists\": {\"shield\": {\"em\": 0.075, \"therm\": 0.5375, \"kin\": 0.445, \"exp\": 0.8612}, \"armor\": {\"em\": 0.736, \"therm\": 0.868, \"kin\": 0.7561, \"exp\": 0.8152}, \"hull\": {\"em\": 0.598, \"therm\": 0.598, \"kin\": 0.598, \"exp\": 0.598}}, \"reps\": {\"burst\": {\"shieldRegen\": 2.88, \"shieldBoost\": 24.98, \"armor\": 99.16, \"hull\": 4.15, \"total\": 131.17}, \"sustained\": {\"shieldRegen\": 2.88, \"shieldBoost\": 7.37, \"armor\": 99.16, \"hull\": 0.0, \"total\": 109.41}}}, \"misc\": {\"ship\": {\"id\": 52250, \"name\": \"Nergal\", \"cpuMax\": 187.5, \"powerMax\": 68.75, \"cpuUsed\": 144.75, \"pgUsed\": 54.0, \"calibrationUsed\": 100.0, \"warpSpeed\": 5.5}, \"drones\": {\"activeDrones\": 5, \"droneBayTotal\": 25.0, \"droneBandwidthUsed\": 25.0, \"droneBayUsed\": 25.0}, \"maxSpeed\": 321.46, \"signature\": 36.0, \"capacitor\": {\"capacity\": 821.25, \"stable\": false, \"stableAt\": null, \"lastsSeconds\": 72.0}, \"targeting\": {\"range\": 56250.0, \"resolution\": 800.0, \"strength\": 16.8}}}\n",
+    "fit": "[Nergal, Nergsdfasdfl fit]\n\nSmall Armor Repairer II\nAssault Damage Control II\nAdaptive Nano Plating II\nAdaptive Nano Plating II\n\nSmall Hull Repairer II\nSmall Shield Booster I\nSmall Compact Pb-Acid Cap Battery\n\nLight Entropic Disintegrator I, Tetryon Exotic Plasma S\n[Empty High slot]\n\nSmall Anti-Kinetic Pump I\nSmall Anti-Kinetic Pump I\n\nHobgoblin II x5",
+    "command": "xvfb-run python3.6 /pyfa/pyfa.py -r -l Critical -f W05lcmdhbCwgTmVyZ3NkZmFzZGZsIGZpdF0KClNtYWxsIEFybW9yIFJlcGFpcmVyIElJCkFzc2F1bHQgRGFtYWdlIENvbnRyb2wgSUkKQWRhcHRpdmUgTmFubyBQbGF0aW5nIElJCkFkYXB0aXZlIE5hbm8gUGxhdGluZyBJSQoKU21hbGwgSHVsbCBSZXBhaXJlciBJSQpTbWFsbCBTaGllbGQgQm9vc3RlciBJClNtYWxsIENvbXBhY3QgUGItQWNpZCBDYXAgQmF0dGVyeQoKTGlnaHQgRW50cm9waWMgRGlzaW50ZWdyYXRvciBJLCBUZXRyeW9uIEV4b3RpYyBQbGFzbWEgUwpbRW1wdHkgSGlnaCBzbG90XQoKU21hbGwgQW50aS1LaW5ldGljIFB1bXAgSQpTbWFsbCBBbnRpLUtpbmV0aWMgUHVtcCBJCgpIb2Jnb2JsaW4gSUkgeDU="
+  }
+}
+```
 
 ## Resources
 When idle an unused, the container uses *20MB* of memory. When used it peaks at around *350-400 MB* and then returns to *150-200 MB* idle memory. The container size is *1.69 GB*

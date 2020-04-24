@@ -15,19 +15,20 @@
 
         $secret = $_POST["secret"] ?? $_GET["secret"];
         if ($api_secret && trim($secret) != trim($api_secret)) {
-            throw new Exception("Invalid secret. Please provide the secret specified in the SGS_SECRET environment variable.", 403);
+            throw new Exception("Invalid secret. Please provide the secret specified in the SFS_SECRET environment variable.", 403);
         }
 
-        // Get fit, accept both POST and url encoded GET
-        $fit = $_POST["fit"] ?? urldecode($_GET["fit"]);
-        if (!$fit) {
-            throw new Exception("Error Processing Request: Please supply a fit. For more details please check https://github.com/molbal/svcfitstat-worker", 400);
-        }
 
         // Handle restart command
         if (isset($_GET["restart"])) {
             echo json_encode(["status" => true, "stdout" => shell_exex("shutdown -r now")]);
             die();
+        }
+        
+        // Get fit, accept both POST and url encoded GET
+        $fit = $_POST["fit"] ?? urldecode($_GET["fit"]);
+        if (!$fit) {
+            throw new Exception("Error Processing Request: Please supply a fit. For more details please check https://github.com/molbal/svcfitstat-worker", 400);
         }
 
         // Let's not overload this
