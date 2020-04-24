@@ -14,8 +14,23 @@ The image is published in Docker Hub, so usage is straightforward:
 
 https://hub.docker.com/r/molbal/svcfitstat
 
+## Webservice calls
+By default the container listens on port 80. There is only one endpoint, which takes both *GET* and *POST* requests. GET requests are trivial and POST requests have to made as if html form submitted it. (So the content type must be `application/x-www-form-urlencoded`)
+
+### Parameters
+At all times returned content will have the `Content-type: application/json` header and will be a valid json. One exception could be a severely broken input that makes Pyfa hang.
+
+|Parameter|Methods|Description|Mandatory|
+|---|---|---|---|
+|secret|GET,POST|Secret key, defined in the SFS_SECRET environment variable|Yes, if set in the environment variable|
+|fit|GET, POST|The fit, in EFT format. You should make sure it is a valid format, because the wrapper does not check it, just feeds it to Pyfa. If supplied via GET parameter, it passes through PHP's [urldecode](https://www.php.net/manual/en/function.urldecode.php) function, so encode it properly. If via POST, it is not urldecoded.|
+|restart|GET|If set, it tries to immediately restart the container|-|
+
+### Example output
+...
+
 ## Resources
-When idle, the container uses *39MB* of memory. The container size is  1.69 GB.
+When idle an unused, the container uses *20MB* of memory. When used it peaks at around *350-400 MB* and then returns to *150-200 MB* idle memory. The container size is *1.69 GB*
 
 ## Technical solution
 It was challanging to get it working. The container uses a CentOS 7 base image and has installs following software:
@@ -49,6 +64,7 @@ During build period a pre-built eve.db is entered to shorten the build time.
 The first part of version will refer to the integration built around pyfa, and the second part is the base pyfa's version.
 So for example, 0.9-2.20.2 is for the 0.9 version for the integration layers, built around the 2.20.2 original Pyfa. 
 
+
 # Configuration
 The container can be configured with the followign environment variables:
 
@@ -57,6 +73,7 @@ The container can be configured with the followign environment variables:
 |SFS_FIT_MAX_LENGTH|Maximum length of input allowed (chars)|2048|
 |SFS_MAX_EXEC_TIME|Maximum runtime of a single get (seconds)|15|
 |SFS_ADDITIONAL_CMD|Additional command line parameters for Pyfa|`-r -l Critical`|
+|SFS_SECRET|Secret key, that the web service asks for. If not set, specifying this key is unnecessary.|not set|
 
 # Future
 The container size is 1.69GB which is a bit heavy. Also, building the image is longer than I would like (10m+).

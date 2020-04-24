@@ -9,11 +9,27 @@
         $pyfa_main = '/pyfa/pyfa.py';
         $time_limit = getenv("SFS_MAX_EXEC_TIME") == "" ? 15 : intval(getenv("SFS_MAX_EXEC_TIME"));
         $additional_cmd = getenv("SFS_ADDITIONAL_CMD") == "" ? "-r -l Critical" : getenv("SFS_ADDITIONAL_CMD");
+        $api_secret = getenv("SFS_SECRET") == "" ? null : getenv("SFS_SECRET");
+
         set_time_limit($time_limit);
+
+        $secret = $_POST["secret"] ?? $_GET["secret"];
+        if ($api_secret && trim($secret) != trim($api_secret)) {
+            throw new Exception("Invalid secret. Please provide the secret specified in the SGS_SECRET environment variable.", 403);
+        }
 
         // Get fit, accept both POST and url encoded GET
         $fit = $_POST["fit"] ?? urldecode($_GET["fit"]);
-        
+        if (!$fit) {
+            throw new Exception("Error Processing Request: Please supply a fit. For more details please check https://github.com/molbal/svcfitstat-worker", 400);
+        }
+
+        // Handle restart command
+        if (isset($_GET["restart"])) {
+            echo json_encode(["status" => true, "stdout" => shell_exex("shutdown -r now")]);
+            die();
+        }
+
         // Let's not overload this
         if (strlen($fit) > $max_length) {
             throw new Exception("Input data is too long (Max length: $max_length)", 400);
