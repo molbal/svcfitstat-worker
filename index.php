@@ -17,13 +17,6 @@
         if ($api_secret && trim($secret) != trim($api_secret)) {
             throw new Exception("Invalid secret. Please provide the secret specified in the SFS_SECRET environment variable.", 403);
         }
-
-
-        // Handle restart command
-        if (isset($_GET["restart"])) {
-            echo json_encode(["status" => true, "stdout" => shell_exex("shutdown -r now")]);
-            die();
-        }
         
         // Get fit, accept both POST and url encoded GET
         $fit = $_POST["fit"] ?? urldecode($_GET["fit"]);

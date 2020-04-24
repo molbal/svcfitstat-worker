@@ -24,7 +24,6 @@ At all times returned content will have the `Content-type: application/json` hea
 |---|---|---|---|
 |secret|GET,POST|Secret key, defined in the SFS_SECRET environment variable|Yes, if set in the environment variable|
 |fit|GET, POST|The fit, in EFT format. You should make sure it is a valid format, because the wrapper does not check it, just feeds it to Pyfa. If supplied via GET parameter, it passes through PHP's [urldecode](https://www.php.net/manual/en/function.urldecode.php) function, so encode it properly. If via POST, it is not urldecoded.|
-|restart|GET|If set, it tries to immediately restart the container|-|
 
 ### Example request
 
