@@ -1,6 +1,7 @@
 <p align="center">
 <img src="logo_giant.png" alt="logo" width="460">
 </p>
+
 ## Discontinuation notice
 
 Dear Capsuleers,
